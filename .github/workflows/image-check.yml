@@ -1,0 +1,81 @@
+name: Image check
+
+# Checks that docker/Dockerfile builds reproducibly and is a drop-in
+# replacement for the `sourcescan/cargo-near` image with the same versions.
+
+on:
+  pull_request:
+    paths:
+      - "docker/**"
+      - ".github/workflows/image-check.yml"
+  push:
+    branches: [main]
+    paths:
+      - "docker/**"
+      - ".github/workflows/image-check.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+env:
+  CARGO_NEAR_VERSION: "0.22.0"
+  RUST_VERSION: "1.97.1"
+  SOURCESCAN_IMAGE: "sourcescan/cargo-near:0.22.0-rust-1.97.1@sha256:7467038bdddc86484b73b416eeadce926ff59013e128e53dec5a19e1cb4b2234"
+
+jobs:
+  reproducible:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: docker/setup-buildx-action@v4
+      - name: Build the image twice without cache
+        run: |
+          for i in 1 2; do
+            docker/build.sh "$CARGO_NEAR_VERSION" "$RUST_VERSION" --no-cache \
+              --output "type=oci,dest=image-$i.tar,rewrite-timestamp=true"
+          done
+          first=$(tar -xOf image-1.tar index.json | jq -r '.manifests[0].digest')
+          second=$(tar -xOf image-2.tar index.json | jq -r '.manifests[0].digest')
+          echo "first:  $first"
+          echo "second: $second"
+          test "$first" = "$second"
+
+  dropin:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: docker/setup-buildx-action@v4
+      - name: Build the image
+        run: |
+          docker/build.sh "$CARGO_NEAR_VERSION" "$RUST_VERSION" \
+            --tag cargo-near:check --output type=docker,rewrite-timestamp=true
+          docker pull "$SOURCESCAN_IMAGE"
+
+      - name: "`cargo near new` template"
+        run: |
+          mkdir -p fixtures/template
+          cp -r cargo-near/src/commands/new/new-project-template/. fixtures/template/
+          mv fixtures/template/Cargo.template.toml fixtures/template/Cargo.toml
+          docker run --rm -u "$(id -u):$(id -g)" -v "$PWD/fixtures/template:/home/near/code" \
+            -w /home/near/code "$SOURCESCAN_IMAGE" cargo generate-lockfile
+          docker/check-dropin.sh fixtures/template "" "$SOURCESCAN_IMAGE" cargo-near:check -- \
+            cargo near build non-reproducible-wasm --locked
+
+      # Rebuilds the MPC contract deployed at `v1.signer` (3.16.0) with the
+      # NEP-330 inputs recorded on-chain and compares it to the on-chain hash.
+      - name: "v1.signer reproduces in the new image"
+        run: |
+          git clone -q https://github.com/near/mpc fixtures/mpc
+          git -C fixtures/mpc checkout -q 3499a2a44207df89699c9791e21623613a365a16
+          docker run --rm -u "$(id -u):$(id -g)" \
+            -v "$PWD/fixtures/mpc:/home/near/code" -w /home/near/code/crates/contract \
+            -e NEP330_BUILD_INFO_BUILD_ENVIRONMENT="$SOURCESCAN_IMAGE" \
+            -e NEP330_BUILD_INFO_SOURCE_CODE_SNAPSHOT="git+https://github.com/near/mpc?rev=3499a2a44207df89699c9791e21623613a365a16" \
+            -e NEP330_BUILD_INFO_CONTRACT_PATH=crates/contract \
+            -e NEP330_BUILD_INFO_OUTPUT_WASM_PATH=/home/near/code/target/near/mpc_contract/mpc_contract.wasm \
+            -e NEP330_LINK=https://github.com/near/mpc/tree/3499a2a44207df89699c9791e21623613a365a16 \
+            cargo-near:check \
+            cargo near build non-reproducible-wasm --locked --profile=release-contract --features abi
+          # base58 BqN6GrovBmBD7g41p5GvXMVUJcLgipuVGXF6ps6hQgBy
+          echo "a0f8987e771844528fe71952f9c5598dd9f0d1b677c47d718bd71ac441283a30  fixtures/mpc/target/near/mpc_contract/mpc_contract.wasm" | sha256sum -c
