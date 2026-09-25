@@ -1,1 +1,362 @@
-[]
+[
+  {
+    "image": "sourcescan/cargo-near",
+    "tag": "0.10.0-rust-1.81.0",
+    "digest": "sha256:5013a742e19a95c108bdfce085a57bda2f1047248e5eb9f005a8adc1ec8a1e42",
+    "cargo_near": "0.10.0",
+    "rust": "1.81.0",
+    "mirror": "ghcr.io/r-near/cargo-near-sourcescan"
+  },
+  {
+    "image": "sourcescan/cargo-near",
+    "tag": "0.10.1-rust-1.82.0",
+    "digest": "sha256:48206ab74c774cb03394ef84f0c5e0b458a071331164b5da853de06f3510cbf8",
+    "cargo_near": "0.10.1",
+    "rust": "1.82.0",
+    "mirror": "ghcr.io/r-near/cargo-near-sourcescan"
+  },
+  {
+    "image": "sourcescan/cargo-near",
+    "tag": "0.11.0-rust-1.82.0",
+    "digest": "sha256:6af67e796ff7182f6b184031f9e95d792f97b66693698abc51b4630acac0bf83",
+    "cargo_near": "0.11.0",
+    "rust": "1.82.0",
+    "mirror": "ghcr.io/r-near/cargo-near-sourcescan"
+  },
+  {
+    "image": "sourcescan/cargo-near",
+    "tag": "0.12.0-rust-1.82.0",
+    "digest": "sha256:ade9b90ed750e4be3aa66dd7f25989288805ee8dfbb99553fff305c0d242f3e2",
+    "cargo_near": "0.12.0",
+    "rust": "1.82.0",
+    "mirror": "ghcr.io/r-near/cargo-near-sourcescan"
+  },
+  {
+    "image": "sourcescan/cargo-near",
+    "tag": "0.12.1-rust-1.82.0",
+    "digest": "sha256:841e72af53e151e3d8f65ef2e50dcec162699d876348a8ec0e77b6cdede667d9",
+    "cargo_near": "0.12.1",
+    "rust": "1.82.0",
+    "mirror": "ghcr.io/r-near/cargo-near-sourcescan"
+  },
+  {
+    "image": "sourcescan/cargo-near",
+    "tag": "0.12.2-rust-1.82.0",
+    "digest": "sha256:ed398028ef25d49a7a4b3d96dfe3c358745c8db246d9421b05e8ae937aaaf55a",
+    "cargo_near": "0.12.2",
+    "rust": "1.82.0",
+    "mirror": "ghcr.io/r-near/cargo-near-sourcescan"
+  },
+  {
+    "image": "sourcescan/cargo-near",
+    "tag": "0.12.2-rust-1.83.0",
+    "digest": "sha256:331af57ff315784c9e27e9e01be3882400986d2398fe150511fd5f3dbc569f38",
+    "cargo_near": "0.12.2",
+    "rust": "1.83.0",
+    "mirror": "ghcr.io/r-near/cargo-near-sourcescan"
+  },
+  {
+    "image": "sourcescan/cargo-near",
+    "tag": "0.13.0-rust-1.83.0",
+    "digest": "sha256:a2584ef8c9381d157da4f30100047cbf04adbe04339f1407f6bf0af7712b84a3",
+    "cargo_near": "0.13.0",
+    "rust": "1.83.0",
+    "mirror": "ghcr.io/r-near/cargo-near-sourcescan"
+  },
+  {
+    "image": "sourcescan/cargo-near",
+    "tag": "0.13.1-rust-1.83.0",
+    "digest": "sha256:cc80ff2f2a42823ffd991eaf45ea9fada71ee206d79561eea4f40ecc27bff1be",
+    "cargo_near": "0.13.1",
+    "rust": "1.83.0",
+    "mirror": "ghcr.io/r-near/cargo-near-sourcescan"
+  },
+  {
+    "image": "sourcescan/cargo-near",
+    "tag": "0.13.2-rust-1.83.0",
+    "digest": "sha256:d4ecd27f78dea4e37ddc44a86c46a920454472c08a0950228629f2edafb24d0d",
+    "cargo_near": "0.13.2",
+    "rust": "1.83.0",
+    "mirror": "ghcr.io/r-near/cargo-near-sourcescan"
+  },
+  {
+    "image": "sourcescan/cargo-near",
+    "tag": "0.13.2-rust-1.84.0",
+    "digest": "sha256:b41cb89907f92b114da9e2be4e109bff30ab792c22ddcbd2a4cff8e340cb9acb",
+    "cargo_near": "0.13.2",
+    "rust": "1.84.0",
+    "mirror": "ghcr.io/r-near/cargo-near-sourcescan"
+  },
+  {
+    "image": "sourcescan/cargo-near",
+    "tag": "0.13.3-rust-1.84.0",
+    "digest": "sha256:722198ddb92d1b82cbfcd3a4a9f7fba6fd8715f4d0b5fb236d8725c4883f97de",
+    "cargo_near": "0.13.3",
+    "rust": "1.84.0",
+    "mirror": "ghcr.io/r-near/cargo-near-sourcescan"
+  },
+  {
+    "image": "sourcescan/cargo-near",
+    "tag": "0.13.3-rust-1.84.1",
+    "digest": "sha256:baa712c5d2b7522d38175e36330d336ad2c4ce32bfaaa41af94ce40407ecd803",
+    "cargo_near": "0.13.3",
+    "rust": "1.84.1",
+    "mirror": "ghcr.io/r-near/cargo-near-sourcescan"
+  },
+  {
+    "image": "sourcescan/cargo-near",
+    "tag": "0.13.4-rust-1.84.1",
+    "digest": "sha256:b0d298338054b587eab3ffbd2eddf995073fddf360f09f44cbccccc2e23ef820",
+    "cargo_near": "0.13.4",
+    "rust": "1.84.1",
+    "mirror": "ghcr.io/r-near/cargo-near-sourcescan"
+  },
+  {
+    "image": "sourcescan/cargo-near",
+    "tag": "0.13.4-rust-1.85.0",
+    "digest": "sha256:a9d8bee7b134856cc8baa142494a177f2ba9ecfededfcdd38f634e14cca8aae2",
+    "cargo_near": "0.13.4",
+    "rust": "1.85.0",
+    "mirror": "ghcr.io/r-near/cargo-near-sourcescan"
+  },
+  {
+    "image": "sourcescan/cargo-near",
+    "tag": "0.13.4-rust-1.85.1",
+    "digest": "sha256:1f8b71742802f38990d442e8678aa4c0cd1c8317dd3ff493f41c079675d4f35b",
+    "cargo_near": "0.13.4",
+    "rust": "1.85.1",
+    "mirror": "ghcr.io/r-near/cargo-near-sourcescan"
+  },
+  {
+    "image": "sourcescan/cargo-near",
+    "tag": "0.13.5-rust-1.85.1",
+    "digest": "sha256:3b0272ecdbb91465f3e7348330d7f2d031d27901f26fb25b4eaf1560a60c20f3",
+    "cargo_near": "0.13.5",
+    "rust": "1.85.1",
+    "mirror": "ghcr.io/r-near/cargo-near-sourcescan"
+  },
+  {
+    "image": "sourcescan/cargo-near",
+    "tag": "0.13.6-rust-1.86.0",
+    "digest": "sha256:589c460a6dd7c66656206ab8fc94db5d74d10feb4126af26e7c67ad0407086b8",
+    "cargo_near": "0.13.6",
+    "rust": "1.86.0",
+    "mirror": "ghcr.io/r-near/cargo-near-sourcescan"
+  },
+  {
+    "image": "sourcescan/cargo-near",
+    "tag": "0.14.1-rust-1.86.0",
+    "digest": "sha256:eaac91be3119cc7c136b6f375f2d3e092001f717ed6151ccc9d5348c2d6a640c",
+    "cargo_near": "0.14.1",
+    "rust": "1.86.0",
+    "mirror": "ghcr.io/r-near/cargo-near-sourcescan"
+  },
+  {
+    "image": "sourcescan/cargo-near",
+    "tag": "0.14.2-rust-1.86.0",
+    "digest": "sha256:2320519772d04dd960c2c5c0172c0887ca4407e1c7c04e3be246b07cc5b21db0",
+    "cargo_near": "0.14.2",
+    "rust": "1.86.0",
+    "mirror": "ghcr.io/r-near/cargo-near-sourcescan"
+  },
+  {
+    "image": "sourcescan/cargo-near",
+    "tag": "0.15.0-rust-1.86.0",
+    "digest": "sha256:aad208b09976f643b56104cc6af87fbb03afadff2e76f9e5e3fa283969e15f8b",
+    "cargo_near": "0.15.0",
+    "rust": "1.86.0",
+    "mirror": "ghcr.io/r-near/cargo-near-sourcescan"
+  },
+  {
+    "image": "sourcescan/cargo-near",
+    "tag": "0.16.0-rust-1.86.0",
+    "digest": "sha256:3220302ebb7036c1942e772810f21edd9381edf9a339983da43487c77fbad488",
+    "cargo_near": "0.16.0",
+    "rust": "1.86.0",
+    "mirror": "ghcr.io/r-near/cargo-near-sourcescan"
+  },
+  {
+    "image": "sourcescan/cargo-near",
+    "tag": "0.16.1-rust-1.86.0",
+    "digest": "sha256:5dff91e3271ace8e679dec5c12b724108c43c2c441a52ba7c94d7ee9e20a87de",
+    "cargo_near": "0.16.1",
+    "rust": "1.86.0",
+    "mirror": "ghcr.io/r-near/cargo-near-sourcescan"
+  },
+  {
+    "image": "sourcescan/cargo-near",
+    "tag": "0.16.2-rust-1.86.0",
+    "digest": "sha256:74c24d4d912f893198b8b13e01d43e0f78f3b00b3df45bf555a707eb4918a54e",
+    "cargo_near": "0.16.2",
+    "rust": "1.86.0",
+    "mirror": "ghcr.io/r-near/cargo-near-sourcescan"
+  },
+  {
+    "image": "sourcescan/cargo-near",
+    "tag": "0.17.0-rust-1.86.0",
+    "digest": "sha256:1784ca6310f3496f0048356ce420921c8f5fdf71ee8124d43a2e1ceb1f70db8a",
+    "cargo_near": "0.17.0",
+    "rust": "1.86.0",
+    "mirror": "ghcr.io/r-near/cargo-near-sourcescan"
+  },
+  {
+    "image": "sourcescan/cargo-near",
+    "tag": "0.18.0-rust-1.86.0",
+    "digest": "sha256:2d0d458d2357277df669eac6fa23a1ac922e5ed16646e1d3315336e4dff18043",
+    "cargo_near": "0.18.0",
+    "rust": "1.86.0",
+    "mirror": "ghcr.io/r-near/cargo-near-sourcescan"
+  },
+  {
+    "image": "sourcescan/cargo-near",
+    "tag": "0.19.0-rust-1.86.0",
+    "digest": "sha256:772638e343baeeea24e49062c7d424274f3441452cc06ce97fc4e5695b19fecc",
+    "cargo_near": "0.19.0",
+    "rust": "1.86.0",
+    "mirror": "ghcr.io/r-near/cargo-near-sourcescan"
+  },
+  {
+    "image": "sourcescan/cargo-near",
+    "tag": "0.20.2-rust-1.86.0",
+    "digest": "sha256:6785df034286de60686ef9a479342c67137520d4c671d3fb8275f1d12f177eb2",
+    "cargo_near": "0.20.2",
+    "rust": "1.86.0",
+    "mirror": "ghcr.io/r-near/cargo-near-sourcescan"
+  },
+  {
+    "image": "sourcescan/cargo-near",
+    "tag": "0.20.3-rust-1.86.0",
+    "digest": "sha256:a84b7c401a856b6bbbe1975f235b6a8011540a24dfbde248531cccb4b2fdbadf",
+    "cargo_near": "0.20.3",
+    "rust": "1.86.0",
+    "mirror": "ghcr.io/r-near/cargo-near-sourcescan"
+  },
+  {
+    "image": "sourcescan/cargo-near",
+    "tag": "0.20.3-rust-1.93.0",
+    "digest": "sha256:8e61653261766ff251a6c6c2004f2745446fc1ba74d807b3daf6e2cc5cf99ea9",
+    "cargo_near": "0.20.3",
+    "rust": "1.93.0",
+    "mirror": "ghcr.io/r-near/cargo-near-sourcescan"
+  },
+  {
+    "image": "sourcescan/cargo-near",
+    "tag": "0.21.1-rust-1.93.0",
+    "digest": "sha256:79b789c81ba19ec30794a6b1046b02dcaf5c055994b22cc7c9af67ab5096b095",
+    "cargo_near": "0.21.1",
+    "rust": "1.93.0",
+    "mirror": "ghcr.io/r-near/cargo-near-sourcescan"
+  },
+  {
+    "image": "sourcescan/cargo-near",
+    "tag": "0.21.1-rust-1.96.0",
+    "digest": "sha256:ccb22bb4e677ed022d8b9d1aa1b32f0af52dd0471ef1c32e48dedbf68ee6ee17",
+    "cargo_near": "0.21.1",
+    "rust": "1.96.0",
+    "mirror": "ghcr.io/r-near/cargo-near-sourcescan"
+  },
+  {
+    "image": "sourcescan/cargo-near",
+    "tag": "0.21.1-rust-1.96.1",
+    "digest": "sha256:86bd27dd489aeb2f5004a7507d3699c045ce2f59f5287e201002966040da4a7d",
+    "cargo_near": "0.21.1",
+    "rust": "1.96.1",
+    "mirror": "ghcr.io/r-near/cargo-near-sourcescan"
+  },
+  {
+    "image": "sourcescan/cargo-near",
+    "tag": "0.21.1-rust-1.97.0",
+    "digest": "sha256:7ba2b3251f29e5d29fca1611cb5298fc44bafddcff8cab2e143b1e491da16633",
+    "cargo_near": "0.21.1",
+    "rust": "1.97.0",
+    "mirror": "ghcr.io/r-near/cargo-near-sourcescan"
+  },
+  {
+    "image": "sourcescan/cargo-near",
+    "tag": "0.22.0-rust-1.97.0",
+    "digest": "sha256:b193c8640a27172f83136a0f0aab2a9bf9d09f6ba0e6afd187addfaa9b92bae0",
+    "cargo_near": "0.22.0",
+    "rust": "1.97.0",
+    "mirror": "ghcr.io/r-near/cargo-near-sourcescan"
+  },
+  {
+    "image": "sourcescan/cargo-near",
+    "tag": "0.22.0-rust-1.97.1",
+    "digest": "sha256:7467038bdddc86484b73b416eeadce926ff59013e128e53dec5a19e1cb4b2234",
+    "cargo_near": "0.22.0",
+    "rust": "1.97.1",
+    "mirror": "ghcr.io/r-near/cargo-near-sourcescan"
+  },
+  {
+    "image": "sourcescan/cargo-near",
+    "tag": "0.7.0-rust-1.80.0",
+    "digest": "sha256:60b6c83c305f689117675502ef6d2a82cabb32e2428ab80925bcdb526260dd9c",
+    "cargo_near": "0.7.0",
+    "rust": "1.80.0",
+    "mirror": "ghcr.io/r-near/cargo-near-sourcescan"
+  },
+  {
+    "image": "sourcescan/cargo-near",
+    "tag": "0.8.0-rust-1.80.0",
+    "digest": "sha256:cea5b8ddc1d214e81363ca6d9edc4468037fc547fa4b4e33626a8efe0dd7af55",
+    "cargo_near": "0.8.0",
+    "rust": "1.80.0",
+    "mirror": "ghcr.io/r-near/cargo-near-sourcescan"
+  },
+  {
+    "image": "sourcescan/cargo-near",
+    "tag": "0.8.1-rust-1.80.0",
+    "digest": "sha256:1dd9f0c947798952d1c6d9eadc20edf00866a5c05fc36cfad320fb78c3a09404",
+    "cargo_near": "0.8.1",
+    "rust": "1.80.0",
+    "mirror": "ghcr.io/r-near/cargo-near-sourcescan"
+  },
+  {
+    "image": "sourcescan/cargo-near",
+    "tag": "0.8.2-rust-1.80.0",
+    "digest": "sha256:ee9f5d7cfdfe62039dbb1d9125f5fd36a44cfbc63c5623fbaaa930cae5cc661b",
+    "cargo_near": "0.8.2",
+    "rust": "1.80.0",
+    "mirror": "ghcr.io/r-near/cargo-near-sourcescan"
+  },
+  {
+    "image": "sourcescan/cargo-near",
+    "tag": "0.8.2-rust-1.80.1",
+    "digest": "sha256:2cbb36ee1c09afe81c200ff3ee76c3222b30afaf33d34bf0133c194b3d0d9857",
+    "cargo_near": "0.8.2",
+    "rust": "1.80.1",
+    "mirror": "ghcr.io/r-near/cargo-near-sourcescan"
+  },
+  {
+    "image": "sourcescan/cargo-near",
+    "tag": "0.8.2-rust-1.81.0",
+    "digest": "sha256:3b5e6efa1d0cef710009f9cc20c845d316187cc170455edc5ba7fdf471c19655",
+    "cargo_near": "0.8.2",
+    "rust": "1.81.0",
+    "mirror": "ghcr.io/r-near/cargo-near-sourcescan"
+  },
+  {
+    "image": "sourcescan/cargo-near",
+    "tag": "0.9.0-rust-1.81.0",
+    "digest": "sha256:a744c515253394f8d6fdbc1eca7dacb87d42c4eadbf4b747f7d5dea685e68a38",
+    "cargo_near": "0.9.0",
+    "rust": "1.81.0",
+    "mirror": "ghcr.io/r-near/cargo-near-sourcescan"
+  },
+  {
+    "image": "sourcescan/cargo-near",
+    "tag": "git-64bd22517b108422a79bfb7ff1ae51b5d153c3f9-1.86.0",
+    "digest": "sha256:a890739b00ea2033816a85af012aab2015a6ae4d8873fb4b96783312d9e23d8f",
+    "cargo_near": "git-64bd22517b108422a79bfb7ff1ae51b5d153c3f9",
+    "rust": "1.86.0",
+    "mirror": "ghcr.io/r-near/cargo-near-sourcescan"
+  },
+  {
+    "image": "sourcescan/cargo-near",
+    "tag": "git-e3c8adb4b5542cbfc159bb1534f2b94c900c1648-1.80.0",
+    "digest": "sha256:4bbcdf985936e1cb9b71c627a00cb9b53546ac0c9ef6b175da2918c1dea21363",
+    "cargo_near": "git-e3c8adb4b5542cbfc159bb1534f2b94c900c1648",
+    "rust": "1.80.0",
+    "mirror": "ghcr.io/r-near/cargo-near-sourcescan"
+  }
+]
