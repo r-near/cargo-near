@@ -1,0 +1,75 @@
+name: Archive sourcescan images
+
+# Copies every `sourcescan/cargo-near` tag to
+# `ghcr.io/<owner>/cargo-near-sourcescan` with digests unchanged, so contracts
+# whose NEP-330 metadata pins those digests stay rebuildable even if the
+# Docker Hub namespace goes away. Opens a PR recording them in
+# docker/images.json.
+
+on:
+  workflow_dispatch:
+
+permissions: {}
+
+env:
+  SOURCE: docker.io/sourcescan/cargo-near
+  MIRROR: ghcr.io/${{ github.repository_owner }}/cargo-near-sourcescan
+
+jobs:
+  archive:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      packages: write
+      pull-requests: write
+    steps:
+      - uses: actions/checkout@v7
+      - uses: imjasonh/setup-crane@v0.7
+      - name: Copy tags
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          echo "$GH_TOKEN" | crane auth login ghcr.io -u "$GITHUB_ACTOR" --password-stdin
+          : > entries.jsonl
+          for tag in $(crane ls "$SOURCE"); do
+            digest=$(crane digest "$SOURCE:$tag")
+            if [ "$(crane digest "$MIRROR:$tag" 2>/dev/null || true)" != "$digest" ]; then
+              crane copy "$SOURCE@$digest" "$MIRROR:$tag"
+            fi
+            test "$(crane digest "$MIRROR:$tag")" = "$digest"
+            if [[ $tag =~ ^(.+)-rust-(.+)$ ]] || [[ $tag =~ ^(git-[0-9a-f]+)-(.+)$ ]]; then
+              cargo_near=${BASH_REMATCH[1]}
+              rust=${BASH_REMATCH[2]}
+            else
+              echo "skipping unrecognised tag $tag"
+              continue
+            fi
+            jq -cn --arg tag "$tag" --arg digest "$digest" --arg cargo_near "$cargo_near" --arg rust "$rust" \
+              --arg mirror "$MIRROR" \
+              '{image: "sourcescan/cargo-near", tag: $tag, digest: $digest, cargo_near: $cargo_near, rust: $rust, mirror: $mirror}' \
+              >> entries.jsonl
+          done
+          wc -l entries.jsonl
+      - name: Open PR updating docker/images.json
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          jq -s --slurpfile current docker/images.json \
+            '$current[0] + . | unique_by(.digest) | sort_by(.cargo_near, .rust)' \
+            entries.jsonl > images.json.new
+          mv images.json.new docker/images.json
+          if git diff --quiet; then
+            echo "docker/images.json is up to date"
+            exit 0
+          fi
+          branch="images/sourcescan-archive-${{ github.run_id }}"
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git switch -c "$branch"
+          git commit -am "chore: record archived sourcescan/cargo-near images"
+          git push origin "$branch"
+          gh pr create --head "$branch" \
+            --title "chore: record archived sourcescan/cargo-near images" \
+            --body "Archived by run ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}."
