@@ -1,1 +1,18 @@
-[]
+[
+  {
+    "image": "ghcr.io/r-near/cargo-near",
+    "tag": "0.22.0-rust-1.97.1",
+    "digest": "sha256:e43aeba92cd090e2618eb5257aed1c3660067ff65d377b764c5d32f6f45f1066",
+    "cargo_near": "0.22.0",
+    "rust": "1.97.1",
+    "dockerfile_rev": "6febb2338b8bd4a6aa7a85aa644b487ac7d5c8fd"
+  },
+  {
+    "image": "ghcr.io/r-near/cargo-near",
+    "tag": "0.22.0-rust-1.98.1",
+    "digest": "sha256:933ed0bb5c97c5a4b5a4d839cdf9a65952becd4ea14a9c5dde7f8cbac0bb7e7b",
+    "cargo_near": "0.22.0",
+    "rust": "1.98.1",
+    "dockerfile_rev": "6febb2338b8bd4a6aa7a85aa644b487ac7d5c8fd"
+  }
+]
