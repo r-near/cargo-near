@@ -1,0 +1,177 @@
+name: Publish image
+
+# Publishes `ghcr.io/<owner>/cargo-near:<cargo-near>-rust-<rust>` for the last
+# four stable Rust releases, attests each image, and opens a PR that records
+# the digests in docker/images.json.
+#
+# Runs after each cargo-near release (called from cargo-near-v-release.yml),
+# daily to pick up new Rust stables, and on demand for backfills. Images that
+# already exist are skipped.
+
+on:
+  workflow_call:
+    inputs:
+      plan:
+        description: dist plan of the release that triggered this run
+        required: true
+        type: string
+  workflow_dispatch:
+    inputs:
+      cargo_near_version:
+        description: "cargo-near version, e.g. 0.22.0 (default: latest release)"
+        required: false
+      rust_versions:
+        description: "space-separated Rust versions (default: last four stables)"
+        required: false
+  schedule:
+    - cron: "0 3 * * *"
+
+permissions: {}
+
+env:
+  IMAGE: ghcr.io/${{ github.repository_owner }}/cargo-near
+
+jobs:
+  resolve:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: read
+    outputs:
+      cargo_near: ${{ steps.resolve.outputs.cargo_near }}
+      rust: ${{ steps.resolve.outputs.rust }}
+    steps:
+      - id: resolve
+        env:
+          GH_TOKEN: ${{ github.token }}
+          PLAN: ${{ inputs.plan }}
+          CARGO_NEAR_INPUT: ${{ inputs.cargo_near_version }}
+          RUST_INPUT: ${{ inputs.rust_versions }}
+        run: |
+          set -euo pipefail
+          if [ -n "$PLAN" ]; then
+            tag=$(jq -r .announcement_tag <<<"$PLAN")
+          elif [ -n "$CARGO_NEAR_INPUT" ]; then
+            tag="cargo-near-v$CARGO_NEAR_INPUT"
+          else
+            tag=$(gh release list -R near/cargo-near --exclude-pre-releases --limit 50 --json tagName \
+              --jq '[.[] | select(.tagName | startswith("cargo-near-v"))][0].tagName')
+          fi
+          cargo_near=${tag#cargo-near-v}
+
+          if [ -n "$RUST_INPUT" ]; then
+            rust=$RUST_INPUT
+          else
+            latest=$(curl -fsSL https://static.rust-lang.org/dist/channel-rust-stable.toml \
+              | sed -n '/^\[pkg.rustc\]/{n;s/^version = "\([0-9.]*\).*/\1/p}')
+            minor=$(cut -d. -f2 <<<"$latest")
+            rust=""
+            for m in $(seq $((minor - 3)) "$minor"); do
+              v=$(curl -fsSL "https://static.rust-lang.org/dist/channel-rust-1.$m.toml" \
+                | sed -n '/^\[pkg.rustc\]/{n;s/^version = "\([0-9.]*\).*/\1/p}')
+              rust="$rust $v"
+            done
+          fi
+
+          echo "$GH_TOKEN" | docker login ghcr.io -u "$GITHUB_ACTOR" --password-stdin
+          missing=()
+          for v in $rust; do
+            if docker manifest inspect "$IMAGE:$cargo_near-rust-$v" >/dev/null 2>&1; then
+              echo "exists: $IMAGE:$cargo_near-rust-$v"
+            else
+              missing+=("$v")
+            fi
+          done
+
+          echo "cargo_near=$cargo_near" >> "$GITHUB_OUTPUT"
+          echo "rust=$(jq -cn '$ARGS.positional' --args "${missing[@]}")" >> "$GITHUB_OUTPUT"
+          echo "to build: cargo-near $cargo_near, rust ${missing[*]:-none}"
+
+  build:
+    needs: resolve
+    if: needs.resolve.outputs.rust != '[]'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+      id-token: write
+      attestations: write
+    strategy:
+      fail-fast: false
+      matrix:
+        rust: ${{ fromJson(needs.resolve.outputs.rust) }}
+    env:
+      TAG: ${{ needs.resolve.outputs.cargo_near }}-rust-${{ matrix.rust }}
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+      - uses: docker/setup-buildx-action@v3
+      - uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ github.token }}
+      - id: build
+        run: |
+          docker/build.sh "${{ needs.resolve.outputs.cargo_near }}" "${{ matrix.rust }}" \
+            --tag "$IMAGE:$TAG" \
+            --output type=image,push=true,oci-mediatypes=true,rewrite-timestamp=true \
+            --metadata-file metadata.json
+          echo "digest=$(jq -r '."containerimage.digest"' metadata.json)" >> "$GITHUB_OUTPUT"
+      - uses: actions/attest-build-provenance@v3
+        with:
+          subject-name: ${{ env.IMAGE }}
+          subject-digest: ${{ steps.build.outputs.digest }}
+          push-to-registry: true
+      - name: Record image
+        run: |
+          jq -n \
+            --arg image "$IMAGE" --arg tag "$TAG" --arg digest "${{ steps.build.outputs.digest }}" \
+            --arg cargo_near "${{ needs.resolve.outputs.cargo_near }}" --arg rust "${{ matrix.rust }}" \
+            --arg rev "$GITHUB_SHA" \
+            '{image: $image, tag: $tag, digest: $digest, cargo_near: $cargo_near, rust: $rust, dockerfile_rev: $rev}' \
+            > entry.json
+          cat entry.json
+      - uses: actions/upload-artifact@v4
+        with:
+          name: image-${{ env.TAG }}
+          path: entry.json
+
+  # Runs even if some matrix legs failed, so every pushed image gets recorded.
+  record:
+    needs: [resolve, build]
+    if: ${{ !cancelled() && needs.build.result != 'skipped' }}
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+    concurrency:
+      group: publish-image-record
+      cancel-in-progress: false
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: image-*
+          path: entries
+      - name: Open PR updating docker/images.json
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          shopt -s nullglob
+          entries=(entries/*/entry.json)
+          [ ${#entries[@]} -gt 0 ] || { echo "no images were published"; exit 0; }
+          jq -s '.[0] + .[1:] | unique_by(.digest) | sort_by(.cargo_near, .rust)' \
+            docker/images.json "${entries[@]}" > images.json.new
+          mv images.json.new docker/images.json
+          branch="images/cargo-near-${{ needs.resolve.outputs.cargo_near }}-${{ github.run_id }}"
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git switch -c "$branch"
+          git commit -am "chore: record cargo-near ${{ needs.resolve.outputs.cargo_near }} images"
+          git push origin "$branch"
+          gh pr create --head "$branch" \
+            --title "chore: record cargo-near ${{ needs.resolve.outputs.cargo_near }} images" \
+            --body "Published by run ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}."
